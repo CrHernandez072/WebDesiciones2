@@ -90,24 +90,3 @@ class ResultadoExamenes(models.Model):
 	def __str__(self):
 		return str(self.Num_Examen)
 
-
-# Enrutamiento estatico: con este enrutamiento el enrutador es ordenado por el administrador de la red, 
-# por deonde llegan las redes remotes, se configura manualmente y dentro de sus ventajas, está el control
-# total sobre la seleccion de la ruta. 
-# 	Ventajas: 
-# 		Disponibilidad
-
-# Enrutamiento dinamico: se logra mediante el uso de los protocolos de enrutamiento RIP y IGRP y EIGRP, OSPF.
-# Este enrutamiento posee una gran convergencia y escala mucho mejor que el de redes, but tiene un alto costo
-# en la utilizacion de recursos como son la ram, ciclo de CPU, y ancho de banda. 
-
-# Los protocolos de enturamiento indican al enrutador como enrutarse. mientras que los protocolos enrutados
-# son aquellos que están siendo enrutados por los protocolos de enturamiento.
-
-# TAREA: 
-# 	traer para que sirven los protocolos de enrutamiento
-# 	RIP
-# 	IGRP
-# 	EIGRP
-
-# que son sistemas autonomos en redes

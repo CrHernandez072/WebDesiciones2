@@ -2,35 +2,31 @@
 {% extends 'app_proyecto/gerente/base.html' %}
 
 <!-- SOBRESCRIBE LA ETIQUETA TITULO -->
-{% block titulo %}Listado de empleados{% endblock %} 
+{% block titulo %}Cantidad de empleados por área{% endblock %} 
 
 <!-- SOBRESCRIBE EL NOMBRE DEL TITULO DEL BODY -->
-{% block titulo_navbar %}Listado de empleados{% endblock %}
+{% block titulo_navbar %}Cantidad de empleados por área{% endblock %}
 
 <!-- CONTENIDO DEL USUARIO VERSION MOVIL -->
 {% block contenido %}
  <div class="container" style="width: 70%; height: 400px;">
  	<div class="input-field col s12">
-			           <i class="fas fa-filter prefix"></i>
+			          <i class="fas fa-filter prefix"></i>
 			          <input id="icon_prefix" type="text" class="validate search" name="search" required="true" autocomplete="off">
-			          <label for="icon_prefix">Obtener todos los que hicieron examen de: </label>
+			          <label for="icon_prefix">Introduzca su filtro </label>
 			        </div>
 	<table class="bordered centered striped" id ="tabla">
 		<thead>
 			<tr>
-				<th>No Empleado</th>
-				<th>Curp</th>
 				<th>Puesto</th>
-				<th>Contraseña</th>
+				<th>Cantidad de miembros</th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for value in object_list %}
 				<tr>
-					<td>{{ value.No_Empleado }}</td>
-				    <td>{{ value.Curp }}</td>
-				    <td>{{ value.Id_Puesto}}</td>
-				    <td>{{ value.contraseña }}</td>
+					<td>{{ value.Id_Puesto }}</td>
+					<td>{{ value.cantidad }}</td>
 				</tr>
 			{% endfor %}
 		</tbody>

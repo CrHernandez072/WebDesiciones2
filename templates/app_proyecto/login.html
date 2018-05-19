@@ -9,7 +9,7 @@
      {%if request.session.id_puesto  == "Gerente"%}
 		<script>window.location.replace("../inicio_gerente");</script>
 	{%elif request.session.id_puesto  == "Supervisor"%}
-		<script>alert("Es Supervisor")</script>
+		<script>window.location.replace("../inicio_supervisor");</script>
 	{%elif request.session.id_puesto  == "Empleado"%}
 		<script>alert("Es Empleado")</script>
 	{%endif%}
@@ -44,5 +44,8 @@
 				</div>
 		    </form>
 		</div>
+		<div class="red accent-3" style="color: white; text-align: center;  solid; {{css}}">
+		<p>{{error}}</p>
+	</div> 
 	</div>
 {% endblock %}

@@ -5,7 +5,7 @@
       window.location.replace("../login");
     </script>
   {%else%}
-      {%if request.session.id_puesto  != "Gerente"%}
+      {%if request.session.id_puesto  != "Supervisor"%}
         <script>window.location.replace("../login");</script>
       {%endif%}
   {%endif%}
@@ -26,12 +26,11 @@
 <body>
     {% block nav_dropdowns %}
         <ul id="drop_empleados" class="dropdown-content">
-            <li><a href="../Cantidad_Empleados_Area">Cantidad por área</a></li>
-            <li><a href="../consulta_empleados">Consultar</a></li>
+            <li><a href="../sup_Cantidad_Empleados_Area">Cantidad por área</a></li>
+            <li><a href="../sup_consulta_empleados">Consultar</a></li>
         </ul>
         <ul id="drop_personas" class="dropdown-content">
-            <li><a href="../Todos_Examenes">Examenes</a></li>
-            <li><a href="../Modificar_Dictamen_Examen">Modificar Examen</a></li>
+            <li><a href="../sup_Todos_Examenes">Examenes</a></li>
         </ul>
         <ul id="drop_cuenta" class="dropdown-content">
          <li><a class="waves-effect" href="../salir">Salir</a></li>
@@ -49,7 +48,7 @@
                         <li><a href="#" data-activates="slide-out" class=" button-collapse"><i class="fas fa-bars"></i></a></li>
                         </ul>
                         <ul class="right hide-on-med-and-down">
-                        <li><a href="../inicio_gerente">Inicio</a></li>
+                        <li><a href="../inicio_supervisor">Inicio</a></li>
                         <li><a class="dropdown-button" href="#!" data-activates="drop_empleados"><i class="fas fa-chevron-circle-down fa-1x"></i>   Empleados</a></li>
                         <li><a class="dropdown-button" href="#!" data-activates="drop_personas"><i class="fas fa-chevron-circle-down fa-1x"></i>   Personas</a></li>
                         <li><a class="dropdown-button" href="#!" data-activates="drop_cuenta"><i class="fas fa-chevron-circle-down fa-1x"></i>   Cuenta</a></li>
@@ -67,7 +66,7 @@
                 <a><span class="white-text email">{{request.session.id_puesto}}</span></a>
               </div>
             </li>
-                <li><a href="../inicio_gerente">Inicio</a></li>
+                <li><a href="../inicio_Supervisor">Inicio</a></li>
             <li><div class="divider"></div></li>
                 <li><a class="subheader">Empleados</a></li>
                 <li><a href="../Cantidad_Empleados_Area">Cantidad por área</a></li>

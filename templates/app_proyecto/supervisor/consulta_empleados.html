@@ -1,5 +1,5 @@
 <!-- CARGA LOS BLOQUES DEL ARCHIVO BASE -->
-{% extends 'app_proyecto/gerente/base.html' %}
+{% extends 'app_proyecto/supervisor/base.html' %}
 
 <!-- SOBRESCRIBE LA ETIQUETA TITULO -->
 {% block titulo %}Listado de empleados{% endblock %} 
@@ -21,7 +21,6 @@
 				<th>No Empleado</th>
 				<th>Curp</th>
 				<th>Puesto</th>
-				<th>Contraseña</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -30,7 +29,6 @@
 					<td>{{ value.No_Empleado }}</td>
 				    <td>{{ value.Curp }}</td>
 				    <td>{{ value.Id_Puesto}}</td>
-				    <td>{{ value.contraseña }}</td>
 				</tr>
 			{% endfor %}
 		</tbody>

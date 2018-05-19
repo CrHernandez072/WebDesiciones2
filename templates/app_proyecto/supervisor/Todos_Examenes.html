@@ -1,11 +1,11 @@
 <!-- CARGA LOS BLOQUES DEL ARCHIVO BASE -->
-{% extends 'app_proyecto/gerente/base.html' %}
+{% extends 'app_proyecto/supervisor/base.html' %}
 
 <!-- SOBRESCRIBE LA ETIQUETA TITULO -->
-{% block titulo %}Listado de empleados{% endblock %} 
+{% block titulo %}Todos los examenes{% endblock %} 
 
 <!-- SOBRESCRIBE EL NOMBRE DEL TITULO DEL BODY -->
-{% block titulo_navbar %}Listado de empleados{% endblock %}
+{% block titulo_navbar %}Todos los examenes {% endblock %}
 
 <!-- CONTENIDO DEL USUARIO VERSION MOVIL -->
 {% block contenido %}
@@ -18,23 +18,32 @@
 	<table class="bordered centered striped" id ="tabla">
 		<thead>
 			<tr>
-				<th>No Empleado</th>
+				<th>Número de examen</th>
 				<th>Curp</th>
-				<th>Puesto</th>
-				<th>Contraseña</th>
+				<th>Aplicó a</th>
+				<th>Puntaje Obtenido</th>
+				<th>Fecha de elaboración</th>
+				<th>Dictamen</th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for value in object_list %}
 				<tr>
-					<td>{{ value.No_Empleado }}</td>
-				    <td>{{ value.Curp }}</td>
-				    <td>{{ value.Id_Puesto}}</td>
-				    <td>{{ value.contraseña }}</td>
+					<td>{{ value.Num_Examen.Num_Examen }}</td>
+					<td>{{ value.Num_Examen.Curp }}</td>
+					<td>{{ value.Num_Examen.Id_Examen }}</td>
+				    <td>{{ value.Puntaje }}</td>
+				    <td>{{value.Num_Examen.Fecha_Elaborado}}</td>
+				    <td>{{ value.Dictamen }}</td>
 				</tr>
 			{% endfor %}
 		</tbody>
 	</table>
 </div>
+
+<script>
+	
+
+</script>
 {% endblock %} 
 

@@ -1,0 +1,74 @@
+<!-- CARGA LOS BLOQUES DEL ARCHIVO BASE -->
+{% extends 'app_proyecto/gerente/base.html' %}
+
+<!-- SOBRESCRIBE LA ETIQUETA TITULO -->
+{% block titulo %}Modificar Dictamen de examen{% endblock %} 
+
+<!-- SOBRESCRIBE EL NOMBRE DEL TITULO DEL BODY -->
+{% block titulo_navbar %}Modificar Dictamen de examen{% endblock %}
+
+<!-- CONTENIDO DEL USUARIO VERSION MOVIL -->
+{% block contenido %}
+ <div class="container" style="width: 75%; height: 400px;">
+ 	<div class="input-field col s12">
+			          <i class="fas fa-filter prefix"></i>
+			          <input id="icon_prefix" type="text" class="validate search" name="search" required="true" autocomplete="off">
+			          <label for="icon_prefix">Introduzca su filtro </label>
+			        </div>
+	<table class="bordered centered striped" id ="tabla">
+		<thead>
+			<tr>
+				<th>Num Examen</th>
+				<th>Curp</th>
+				<th>ID_EXAMEN</th>
+				<th>Área solicitada</th>
+				<th>Puntaje</th>
+				<th>Dictamen</th>
+				<th>Posicionar en</th>
+			</tr>
+		</thead>
+		<tbody>
+			{%for value in object_list %}
+				<tr>
+					<form action="../form_modificar_dictamen/" method="post">
+	    				{% csrf_token %}
+	    				<td>
+	    					<input type="text" name = "Num_Examen" value="{{ value.Num_Examen.Num_Examen }}" readonly style="text-align: center;">
+	    				</td>
+	    				<td>
+	    					<input type="text" name = "Curp" value="{{ value.Num_Examen.Curp }}" readonly style="text-align: center;">
+	    				</td>
+	    				<td>
+	    					<input type="text" name = "Examen" value="{{ value.Num_Examen.Id_Examen }}" readonly style="text-align: center;">
+	    				</td>
+	    				<td>
+	    					<input type="text" name = "Area" value="{{ value.Num_Examen.Id_Examen.Id_Area }}" readonly style="text-align: center;">
+	    				</td>
+	    				<td>
+	    					<input type="text" name = "Puntaje" value="{{ value.Puntaje }}" readonly style="text-align: center;">
+	    				</td>
+	    				<td>
+	    					<input type="text" name = "Dictamen" value="{{ value.Dictamen }}" readonly style="text-align: center;">
+	    				</td>
+	    				<td>
+	    					<select id='{{ forloop.counter }}' required>
+	    						<option value="" disabled selected>Selecciona</option>
+								{% for value in Ids_Puestos %}
+									<option value="{{ value.Id_Puesto }}">{{ value.Id_Puesto }}</option>
+								{% endfor %}
+							</select>
+							<input type="hidden" name="Puesto" id="ID{{ forloop.counter }}" required>
+	    				</td>
+						<td>
+							<button class="btn waves-effect teal darken-4" type="submit">Guardar
+								<i class="far fa-thumbs-up left"></i>
+		  					</button>
+		  				</td>
+					</form>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<h1>{{CONTEXTO}}</h1>
+</div>
+{% endblock %} 
