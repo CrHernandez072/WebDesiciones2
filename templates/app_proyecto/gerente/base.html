@@ -131,6 +131,10 @@
         
         console.log($("#ID" + id).val(seleccion));
     });
+
+    var toastElement = document.querySelector('.toast');
+  var toastInstance = M.Toast.getInstance(toastElement);
+  toastInstance.dismiss();
 </script>
     {% endblock %}  
 </body>

@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+ 
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+ 	<meta charset="UTF-8">
+ 	<style>
+ 		body {
+			display:  flex;
+			min-height: 100vh;
+			flex-wrap: wrap;
+		}
+
+		footer {
+			background-color: #004d40;
+			color: white;
+			line-height:4;
+			align-self: flex-end;
+			width: 100%;
+		}
+ 	</style>
+ </head>
+ <body>
+ 	<div style="text-align: left;">
+ 		<h4 id="expedicion">Expedido: {{fecha}}</h4>
+ 	</div>
+ 	<footer class="teal darken-4 center">
+        <div class="footer-copyright">
+            <div class="container center" style="text-align: center; padding: 15px">
+                REPORTE DE TODOS LOS EXAMENES
+            </div>
+        </div>
+    </footer>
+ <div class="container" style="width: 50%; text-align: center; padding-top: 5px;">
+	<table>
+		<thead>
+			<tr>
+				<th>Numero de examen</th>
+				<th>Curp</th>
+				<th>Aplico a</th>
+				<th>Puntaje Obtenido</th>
+				<th>Fecha de elaboracion</th>
+				<th>Dictamen</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for value in object_list %}
+				<tr>
+					<td>{{ value.Num_Examen.Num_Examen }}</td>
+					<td>{{ value.Num_Examen.Curp }}</td>
+					<td>{{ value.Num_Examen.Id_Examen }}</td>
+				    <td>{{ value.Puntaje }}</td>
+				    <td>{{ value.Num_Examen.Fecha_Elaborado}}</td>
+				    <td>{{ value.Dictamen }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+ </body>
+ </html>
+

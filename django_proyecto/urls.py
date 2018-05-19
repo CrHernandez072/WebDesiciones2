@@ -36,4 +36,9 @@ urlpatterns = [
     path('sup_consulta_empleados/', views.sup_consulta_empleados.as_view(), name = 'sup_consulta_empleados'),
     path('sup_Todos_Examenes/', views.sup_Todos_Examenes.as_view(), name = 'sup_Todos_Examenes'),
     path('sup_Cantidad_Empleados_Area/', views.sup_Cantidad_Empleados_Area.as_view(), name = 'sup_Cantidad_Empleados_Area'),
+
+
+    path('gr_todos_examenes/', views.gr_todos_examenes.as_view(), name = 'gr_todos_examenes'),
+    path('gr_cantidad_empleado_area/', views.gr_cantidad_empleado_area.as_view(), name = 'gr_cantidad_empleado_area'),
+    path('gr_consulta_empleados/', views.gr_consulta_empleados.as_view(), name = 'gr_consulta_empleados'),
 ]

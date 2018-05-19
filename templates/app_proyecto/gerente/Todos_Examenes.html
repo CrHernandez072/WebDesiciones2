@@ -11,10 +11,10 @@
 {% block contenido %}
  <div class="container" style="width: 70%; height: 400px;">
  	<div class="input-field col s12">
-			           <i class="fas fa-filter prefix"></i>
-			          <input id="icon_prefix" type="text" class="validate search" name="search" required="true" autocomplete="off">
-			          <label for="icon_prefix">Obtener todos los que hicieron examen de: </label>
-			        </div>
+       <i class="fas fa-filter prefix"></i>
+      <input id="icon_prefix" type="text" class="validate search" name="search" required="true" autocomplete="off">
+      <label for="icon_prefix">Obtener todos los que hicieron examen de: </label>
+    </div>
 	<table class="bordered centered striped" id ="tabla">
 		<thead>
 			<tr>
@@ -39,11 +39,14 @@
 			{% endfor %}
 		</tbody>
 	</table>
+	<br>
+	<div class="right">
+		<form action="../gr_todos_examenes">
+			<button class="btn waves-effect teal darken-4">IMPRIMIR
+		  	<i class="fas fa-print left"></i>
+		  	</button>
+		</form>
+	</div>
 </div>
-
-<script>
-	
-
-</script>
 {% endblock %} 
 

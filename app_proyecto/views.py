@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.views.generic import CreateView
@@ -7,6 +8,8 @@ from django.views.generic.list import ListView
 from django.http import HttpResponse
 from django.core import serializers
 import json
+
+import datetime
 
 #Se instancia para contar los elementos que agrupo en la vista (Cantidad_Empleados_Area)
 from django.db.models import Count
@@ -176,11 +179,11 @@ def examen_jefe_abarrotes(request):
 				e = models.Empleado(Curp=models.Personas.objects.get(Curp=curp), Id_Puesto=models.PuestoEmpleado.objects.get(Id_Puesto="Jefe de abarrotes"))
 				e.save()
 
-				return render(request, "app_proyecto/examenes/examen_jefe_abarrotes.html")
+				return render(request, "app_proyecto/examenes/examen_jefe_abarrotes.html", {"Mensaje": "Tu examen ha sido guardado", "css": "border: 1px; box-shadow: 2px 5px 15px #888888; border-radius: 5px;"})
 			else:
 				p = models.ResultadoExamenes(Num_Examen=models.ExamenPersonas.objects.get(Num_Examen=num_examen), Puntaje=resultado_examen, Dictamen = "Rechazado")
 				p.save()
-				return render(request, "app_proyecto/examenes/examen_jefe_abarrotes.html")		
+				return render(request, "app_proyecto/examenes/examen_jefe_abarrotes.html", {"Mensaje": "Tu examen ha sido guardado", "css": "border: 1px; box-shadow: 2px 5px 15px #888888; border-radius: 5px;"})
 		else:
 			supervisor = models.Empleado.objects.get(Id_Puesto = "Supervisor")
 			contexto = {'resultado':"El Curp ingresado es erroneo", "r_color": "red"}
@@ -268,3 +271,34 @@ class sup_Cantidad_Empleados_Area(ListView):
 class sup_consulta_empleados(ListView):
     template_name= "app_proyecto/supervisor/consulta_empleados.html"
     queryset = models.Empleado.objects.all()
+
+from django.views.generic import View
+from django_proyecto import utils
+
+
+class gr_todos_examenes(View):
+	#Regresa el pdf
+	def get(self, request, *args, **kwagrs):
+		fecha = datetime.datetime.now()
+		resultados = models.ResultadoExamenes.objects.select_related()
+		pdf = utils.render_pdf("app_proyecto/reportes/gr_todos_examenes.html", {"object_list": resultados, "fecha": fecha})
+
+		return HttpResponse(pdf, content_type="application/pdf")
+
+class gr_cantidad_empleado_area(View):
+	#Regresa el pdf
+	def get(self, request, *args, **kwagrs):
+		fecha = datetime.datetime.now()
+		resultados = models.Empleado.objects.values('Id_Puesto').annotate(cantidad=Count('Id_Puesto'))
+		pdf = utils.render_pdf("app_proyecto/reportes/gr_cantidad_empleado_area.html", {"object_list": resultados, "fecha": fecha})
+
+		return HttpResponse(pdf, content_type="application/pdf")
+
+class gr_consulta_empleados(View):
+	#Regresa el pdf
+	def get(self, request, *args, **kwagrs):
+		fecha = datetime.datetime.now()
+		resultados = models.Empleado.objects.all()
+		pdf = utils.render_pdf("app_proyecto/reportes/gr_consulta_empleados.html", {"object_list": resultados, "fecha": fecha})
+
+		return HttpResponse(pdf, content_type="application/pdf")

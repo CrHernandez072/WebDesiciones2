@@ -81,7 +81,14 @@
 		</div>
 	</form>
 	<br>
+	<br>
+	<div class="teal darken-4" style="color: white; text-align: center;  solid; {{css}}">
+			<p>{{Mensaje}}</p>
+		</div> 
 	</div>
+	<br>
+	<br>
+	
 
 <script>
 
@@ -100,5 +107,8 @@ var txt_supervisor = prompt('Solicita al supervisor que ingrese los datos');
 		alert("Error, datos incorrectos.");
 		location.reload(); 
 	}
+
+
+
 </script>
 {% endblock %}
