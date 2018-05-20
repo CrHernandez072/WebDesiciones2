@@ -60,7 +60,8 @@ def logout(request):
 
 # ENLACES DEL GERENTE!
 def inicio_gerente(request):
-	return render(request, 'app_proyecto/gerente/index.html')
+	queryset = models.Personas.objects.get(Curp = "HEHC960702HBCRRR04")
+	return render(request, 'app_proyecto/gerente/index.html', {"datos":queryset})
 
 class Todos_Examenes(ListView):
     template_name= "app_proyecto/gerente/Todos_Examenes.html"
@@ -258,7 +259,8 @@ def examen_cajas(request):
 
 # ENLACES DEL SUPERVISOR!
 def inicio_supervisor(request):
-	return render(request, 'app_proyecto/supervisor/index.html')
+	queryset = models.Personas.objects.get(Curp = "HEHC960702HBCRRR03")
+	return render(request, 'app_proyecto/supervisor/index.html', {"datos":queryset})
 
 class sup_Todos_Examenes(ListView):
     template_name= "app_proyecto/supervisor/Todos_Examenes.html"
