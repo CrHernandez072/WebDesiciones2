@@ -304,3 +304,25 @@ class gr_consulta_empleados(View):
 		pdf = utils.render_pdf("app_proyecto/reportes/gr_consulta_empleados.html", {"object_list": resultados, "fecha": fecha})
 
 		return HttpResponse(pdf, content_type="application/pdf")
+
+def resultados(request):
+
+	#SE EJECUTARÁ ESTA ACCION SI SE ACCEDE A LA PAGINA DEL MODO POST
+	if request.method == "POST":
+		if models.ExamenPersonas.objects.filter(Curp = request.POST.get('f_curp')).exists():
+
+			datos_persona = models.Personas.objects.get(Curp=request.POST.get('f_curp'))
+			examen_persona = models.ExamenPersonas.objects.get(Curp=request.POST.get('f_curp'))
+			resultado_examen = models.ResultadoExamenes.objects.get(Num_Examen=examen_persona.Num_Examen)
+
+			if resultado_examen.Dictamen == "Aceptado":
+				return render(request, 'app_proyecto/resultados.html', {"container_uno":"none", "container_dos":"","Curp":datos_persona.Curp, "Nombres":datos_persona.Nombres, "Ap_Paterno": datos_persona.Ap_Paterno, "Ap_Materno": datos_persona.Ap_Materno, "Dictamen": resultado_examen.Dictamen, "Area":examen_persona.Id_Examen.Id_Area, "Puntaje": resultado_examen.Puntaje, "estilo":"teal darken-4", "css": "padding:5px;border: 5px; box-shadow: 2px 5px 15px #888888; border-radius: 10px;"})
+			else:
+				return render(request, 'app_proyecto/resultados.html', {"container_uno":"none", "container_dos":"","Curp":datos_persona.Curp, "Nombres":datos_persona.Nombres, "Ap_Paterno": datos_persona.Ap_Paterno, "Ap_Materno": datos_persona.Ap_Materno, "Dictamen": resultado_examen.Dictamen, "Area":examen_persona.Id_Examen.Id_Area, "Puntaje": resultado_examen.Puntaje, "estilo":"red darken-4", "css": "padding:5px;border: 5px; box-shadow: 2px 5px 15px #888888; border-radius: 10px;"})
+		else:
+			return render(request, 'app_proyecto/resultados.html', {"container_uno":"", "container_dos":"none"})
+	
+	#EL USUARIO TIPEÓ LA URL
+	else:
+		return render(request, 'app_proyecto/resultados.html', {"container_uno":"", "container_dos":"none"})
+
