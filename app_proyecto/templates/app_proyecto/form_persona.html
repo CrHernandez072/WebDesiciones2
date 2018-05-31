@@ -57,13 +57,13 @@
          <div class="input-field col s12">
 	          <i class="fas fa-birthday-cake prefix"></i>
 
-	          <input id="icon_prefix" type="date" class="validate" name="Fecha_Nacimiento" maxlength="40" required="true" autocomplete="off">
+	          <input id="icon_prefix" type="date" class="validate" name="Fecha_Nacimiento" maxlength="40" required="true" autocomplete="off" min="1970-01-01" max="2000-12-31">
 	          
 	          <label for="icon_prefix"></label>
         </div>
         <div class="row">
         	<div class="col s6">
-        		<select name="estado_civil" required="" id="id_estado_civil">
+        		<select name="estado_civil" required="true" id="id_estado_civil">
 				  <option value="" selected="">Estado Civil</option>
 				  <option value="Casado">Casado</option>
 				  <option value="Soltero">Soltero</option>
@@ -73,7 +73,7 @@
 				</select>
         	</div>
         	<div class="col s6">
-        		<select name="nivel_escolar" required="" id="id_nivel_escolar">
+        		<select name="nivel_escolar" required="true" id="id_nivel_escolar">
 				  <option value="" selected="">Escolaridad</option>
 
 				  <option value="Primaria">Primaria</option>

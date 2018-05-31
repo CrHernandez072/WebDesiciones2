@@ -136,59 +136,68 @@ def examen_jefe_abarrotes(request):
 		
 		# 1. Verifica si el curp ingresado existe en la bd
 		if models.Personas.objects.filter(Curp = curp).exists():
-			detalle_examen = models.Examen.objects.get(Id_Examen="Examen Jefe Abarrotes") #Obtiene los detalles del examen
+			if models.Empleado.objects.filter(Curp = curp).exists():
+				contexto = {'resultado':"Error, ya eres miembro de la empresa!", "r_color": "red"}
+				return render(request, "app_proyecto/examenes/examen_jefe_abarrotes.html", contexto)
 
-			id_examen = detalle_examen.Id_Examen
-			minimo = int(detalle_examen.puntaje_minimo)
-			maximo = int(detalle_examen.puntaje_maximo)
+			elif models.ExamenPersonas.objects.filter(Curp = curp, Id_Examen = "Examen Jefe Abarrotes").exists():
+				contexto = {'resultado':"Error, ya no puedes aplicar exámenes a esta área!", "r_color": "red"}
+				return render(request, "app_proyecto/examenes/examen_jefe_abarrotes.html", contexto)
 
-			#Cacha los valores que trae el formulario
-			puntaje_edad = int(request.POST.get('edad'))
-			puntaje_ingles = int(request.POST.get('ingles'))
-			puntaje_estudios = int(request.POST.get('estudios'))		
-			arr_consultas = request.POST.getlist('consultas') #Lista de valores seleccionados
-			arr_experiencia = request.POST.getlist('experiencia') #Lista de valores seleccionados
-			arr_conocimientos = request.POST.getlist('conocimientos') #Lista de valores seleccionados
-
-			puntale_consulta = 0
-			puntale_experiencia = 0
-			puntale_conocimiento = 0
-
-			for puntaje in arr_consultas:
-				puntale_consulta = puntale_consulta + int(puntaje)
-
-			for puntaje in arr_experiencia:
-				puntale_experiencia = puntale_experiencia + int(puntaje)
-
-			for puntaje in arr_conocimientos:
-				puntale_conocimiento = puntale_conocimiento + int(puntaje)
-			
-			resultado_examen = puntaje_edad + puntaje_ingles + puntaje_estudios + puntale_consulta + puntale_experiencia + puntale_conocimiento
-
-			#1. Guardando el examenrealizado 
-			p = models.ExamenPersonas(Curp=models.Personas.objects.get(Curp=curp), Id_Examen=models.Examen.objects.get(Id_Examen=id_examen))
-			p.save()
-
-			#2. Extraer "num_examen"
-			detalle = models.ExamenPersonas.objects.get(Curp=curp, Id_Examen="Examen Jefe Abarrotes")
-			num_examen = detalle.Num_Examen
-
-			if resultado_examen >= minimo:
-				p = models.ResultadoExamenes(Num_Examen=models.ExamenPersonas.objects.get(Num_Examen=num_examen), Puntaje=resultado_examen, Dictamen = "Aceptado")
-				p.save()
-
-				e = models.Empleado(Curp=models.Personas.objects.get(Curp=curp), Id_Puesto=models.PuestoEmpleado.objects.get(Id_Puesto="Jefe de abarrotes"))
-				e.save()
-
-				return render(request, "app_proyecto/examenes/examen_jefe_abarrotes.html", {"Mensaje": "Tu examen ha sido guardado", "css": "border: 1px; box-shadow: 2px 5px 15px #888888; border-radius: 5px;"})
 			else:
-				p = models.ResultadoExamenes(Num_Examen=models.ExamenPersonas.objects.get(Num_Examen=num_examen), Puntaje=resultado_examen, Dictamen = "Rechazado")
+				detalle_examen = models.Examen.objects.get(Id_Examen="Examen Jefe Abarrotes") #Obtiene los detalles del examen
+
+				id_examen = detalle_examen.Id_Examen
+				minimo = int(detalle_examen.puntaje_minimo)
+				maximo = int(detalle_examen.puntaje_maximo)
+
+				#Cacha los valores que trae el formulario
+				puntaje_edad = int(request.POST.get('edad'))
+				puntaje_ingles = int(request.POST.get('ingles'))
+				puntaje_estudios = int(request.POST.get('estudios'))		
+				arr_consultas = request.POST.getlist('consultas') #Lista de valores seleccionados
+				arr_experiencia = request.POST.getlist('experiencia') #Lista de valores seleccionados
+				arr_conocimientos = request.POST.getlist('conocimientos') #Lista de valores seleccionados
+
+				puntale_consulta = 0
+				puntale_experiencia = 0
+				puntale_conocimiento = 0
+
+				for puntaje in arr_consultas:
+					puntale_consulta = puntale_consulta + int(puntaje)
+
+				for puntaje in arr_experiencia:
+					puntale_experiencia = puntale_experiencia + int(puntaje)
+
+				for puntaje in arr_conocimientos:
+					puntale_conocimiento = puntale_conocimiento + int(puntaje)
+				
+				resultado_examen = puntaje_edad + puntaje_ingles + puntaje_estudios + puntale_consulta + puntale_experiencia + puntale_conocimiento
+
+				#1. Guardando el examenrealizado 
+				p = models.ExamenPersonas(Curp=models.Personas.objects.get(Curp=curp), Id_Examen=models.Examen.objects.get(Id_Examen=id_examen))
 				p.save()
-				return render(request, "app_proyecto/examenes/examen_jefe_abarrotes.html", {"Mensaje": "Tu examen ha sido guardado", "css": "border: 1px; box-shadow: 2px 5px 15px #888888; border-radius: 5px;"})
+
+				#2. Extraer "num_examen"
+				detalle = models.ExamenPersonas.objects.get(Curp=curp, Id_Examen="Examen Jefe Abarrotes")
+				num_examen = detalle.Num_Examen
+
+				if resultado_examen >= minimo:
+					p = models.ResultadoExamenes(Num_Examen=models.ExamenPersonas.objects.get(Num_Examen=num_examen), Puntaje=resultado_examen, Dictamen = "Aceptado")
+					p.save()
+
+					e = models.Empleado(Curp=models.Personas.objects.get(Curp=curp), Id_Puesto=models.PuestoEmpleado.objects.get(Id_Puesto="Jefe de abarrotes"))
+					e.save()
+
+					return render(request, "app_proyecto/examenes/examen_jefe_abarrotes.html", {"resultado": "Tu examen ha sido guardado", "r_color": "teal"})
+				else:
+					p = models.ResultadoExamenes(Num_Examen=models.ExamenPersonas.objects.get(Num_Examen=num_examen), Puntaje=resultado_examen, Dictamen = "Rechazado")
+					p.save()
+					return render(request, "app_proyecto/examenes/examen_jefe_abarrotes.html", {"resultado": "Tu examen ha sido guardado", "r_color": "teal"})
 		else:
 			supervisor = models.Empleado.objects.get(Id_Puesto = "Supervisor")
 			contexto = {'resultado':"El Curp ingresado es erroneo", "r_color": "red"}
-			return render(request, "app_proyecto/examenes/examen_cajas.html", contexto)
+			return render(request, "app_proyecto/examenes/examen_jefe_abarrotes.html", contexto)
 	else:
 		supervisor = models.Empleado.objects.get(Id_Puesto = "Supervisor")
 		contexto = {"No_Empleado": supervisor.No_Empleado, "Contraseña": supervisor.contraseña}
@@ -201,53 +210,60 @@ def examen_cajas(request):
 
 		# 1. Verifica si el curp ingresado existe en la bd
 		if models.Personas.objects.filter(Curp = curp).exists():
-			detalle_examen = models.Examen.objects.get(Id_Examen="Examen Jefe de Cajas") #Obtiene los detalles del examen
+			if models.Empleado.objects.filter(Curp = curp).exists():
+				contexto = {'resultado':"Error, ya eres miembro de la empresa!", "r_color": "red"}
+				return render(request, "app_proyecto/examenes/examen_cajas.html", contexto)
 
-			id_examen = detalle_examen.Id_Examen
-			minimo = int(detalle_examen.puntaje_minimo)
-			maximo = int(detalle_examen.puntaje_maximo)
+			elif models.ExamenPersonas.objects.filter(Curp = curp, Id_Examen = "Examen Jefe de Cajas").exists():
+				contexto = {'resultado':"Error, ya no puedes aplicar exámenes a esta área!", "r_color": "red"}
+				return render(request, "app_proyecto/examenes/examen_cajas.html", contexto)
 
-			#Cacha los valores que trae el formulario
-			puntaje_edad = int(request.POST.get('edad'))
-			puntaje_ingles = int(request.POST.get('ingles'))
-			puntaje_estudios = int(request.POST.get('estudios'))		
-			arr_consultas = request.POST.getlist('consultas') #Lista de valores seleccionados
-			arr_experiencia = request.POST.getlist('experiencia') #Lista de valores seleccionados
-
-			puntale_consulta = 0
-			puntale_experiencia = 0
-
-			for puntaje in arr_consultas:
-				puntale_consulta = puntale_consulta + int(puntaje)
-
-			for puntaje in arr_experiencia:
-				puntale_experiencia = puntale_experiencia + int(puntaje)
-
-		
-			resultado_examen = puntaje_edad + puntaje_ingles + puntaje_estudios + puntale_consulta + puntale_experiencia
-
-			#1. Guardando el examenrealizado 
-			p = models.ExamenPersonas(Curp=models.Personas.objects.get(Curp=curp), Id_Examen=models.Examen.objects.get(Id_Examen=id_examen))
-			p.save()
-
-			#2. Extraer "num_examen"
-			detalle = models.ExamenPersonas.objects.get(Curp=curp, Id_Examen="Examen Jefe de Cajas")
-			num_examen = detalle.Num_Examen
-
-			if resultado_examen >= minimo:
-				p = models.ResultadoExamenes(Num_Examen=models.ExamenPersonas.objects.get(Num_Examen=num_examen), Puntaje=resultado_examen, Dictamen = "Aceptado")
-				p.save()
-
-				e = models.Empleado(Curp=models.Personas.objects.get(Curp=curp), Id_Puesto=models.PuestoEmpleado.objects.get(Id_Puesto="Jefe de Cajas"))
-				e.save()
-
-				contexto = {'resultado':"Aceptado", "r_color": "green"}
-				return render(request, "app_proyecto/login.html", contexto)
 			else:
-				p = models.ResultadoExamenes(Num_Examen=models.ExamenPersonas.objects.get(Num_Examen=num_examen), Puntaje=resultado_examen, Dictamen = "Rechazado")
+				detalle_examen = models.Examen.objects.get(Id_Examen="Examen Jefe de Cajas") #Obtiene los detalles del examen
+
+				id_examen = detalle_examen.Id_Examen
+				minimo = int(detalle_examen.puntaje_minimo)
+				maximo = int(detalle_examen.puntaje_maximo)
+
+				#Cacha los valores que trae el formulario
+				puntaje_edad = int(request.POST.get('edad'))
+				puntaje_ingles = int(request.POST.get('ingles'))
+				puntaje_estudios = int(request.POST.get('estudios'))		
+				arr_consultas = request.POST.getlist('consultas') #Lista de valores seleccionados
+				arr_experiencia = request.POST.getlist('experiencia') #Lista de valores seleccionados
+
+				puntale_consulta = 0
+				puntale_experiencia = 0
+
+				for puntaje in arr_consultas:
+					puntale_consulta = puntale_consulta + int(puntaje)
+
+				for puntaje in arr_experiencia:
+					puntale_experiencia = puntale_experiencia + int(puntaje)
+
+			
+				resultado_examen = puntaje_edad + puntaje_ingles + puntaje_estudios + puntale_consulta + puntale_experiencia
+
+				#1. Guardando el examenrealizado 
+				p = models.ExamenPersonas(Curp=models.Personas.objects.get(Curp=curp), Id_Examen=models.Examen.objects.get(Id_Examen=id_examen))
 				p.save()
-				contexto = {'resultado':"Suerte para la próxima bro :V", "r_color": "red"}
-				return render(request, "app_proyecto/examenes/examen_cajas.html", contexto)		
+
+				#2. Extraer "num_examen"
+				detalle = models.ExamenPersonas.objects.get(Curp=curp, Id_Examen="Examen Jefe de Cajas")
+				num_examen = detalle.Num_Examen
+
+				if resultado_examen >= minimo:
+					p = models.ResultadoExamenes(Num_Examen=models.ExamenPersonas.objects.get(Num_Examen=num_examen), Puntaje=resultado_examen, Dictamen = "Aceptado")
+					p.save()
+
+					e = models.Empleado(Curp=models.Personas.objects.get(Curp=curp), Id_Puesto=models.PuestoEmpleado.objects.get(Id_Puesto="Jefe de Cajas"))
+					e.save()
+
+					return render(request, "app_proyecto/login.html")
+				else:
+					p = models.ResultadoExamenes(Num_Examen=models.ExamenPersonas.objects.get(Num_Examen=num_examen), Puntaje=resultado_examen, Dictamen = "Rechazado")
+					p.save()
+					return render(request, "app_proyecto/examenes/examen_cajas.html")		
 		else:
 			supervisor = models.Empleado.objects.get(Id_Puesto = "Supervisor")
 			contexto = {'resultado':"El Curp ingresado es erroneo", "r_color": "red"}
@@ -312,7 +328,7 @@ def resultados(request):
 		if models.ExamenPersonas.objects.filter(Curp = request.POST.get('f_curp')).exists():
 
 			datos_persona = models.Personas.objects.get(Curp=request.POST.get('f_curp'))
-			examen_persona = models.ExamenPersonas.objects.get(Curp=request.POST.get('f_curp'))
+			examen_persona = models.ExamenPersonas.objects.filter(Curp=request.POST.get('f_curp')).latest("Num_Examen")
 			resultado_examen = models.ResultadoExamenes.objects.get(Num_Examen=examen_persona.Num_Examen)
 
 			if resultado_examen.Dictamen == "Aceptado":
@@ -320,7 +336,7 @@ def resultados(request):
 			else:
 				return render(request, 'app_proyecto/resultados.html', {"container_uno":"none", "container_dos":"","Curp":datos_persona.Curp, "Nombres":datos_persona.Nombres, "Ap_Paterno": datos_persona.Ap_Paterno, "Ap_Materno": datos_persona.Ap_Materno, "Dictamen": resultado_examen.Dictamen, "Area":examen_persona.Id_Examen.Id_Area, "Puntaje": resultado_examen.Puntaje, "estilo":"red darken-4", "css": "padding:5px;border: 5px; box-shadow: 2px 5px 15px #888888; border-radius: 10px;"})
 		else:
-			return render(request, 'app_proyecto/resultados.html', {"container_uno":"", "container_dos":"none"})
+			return render(request, 'app_proyecto/resultados.html', {"container_uno":"", "container_dos":"none", "r_color":"red", "resultado": "No se encontrarón resultados"})
 	
 	#EL USUARIO TIPEÓ LA URL
 	else:
